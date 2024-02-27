@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.glue.mapper.GlueSysMonitorLogMapper">
+
+    <resultMap type="GlueSysMonitorLog" id="GlueSysMonitorLogResult">
+        <result property="id" column="id"/>
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="glueMachineName" column="glue_machine_name"/>
+        <result property="projectName" column="project_name"/>
+        <result property="lineName" column="line_name"/>
+        <result property="alarmMsg" column="alarm_msg"/>
+        <result property="type" column="type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="selectGlueSysMonitorLogVo">
+        select id,
+               glue_bar_code,
+               glue_machine_name,
+               project_name,
+               line_name,
+               alarm_msg,
+               type,
+               create_time,
+               status
+        from glue_sys_monitor_log
+    </sql>
+
+    <update id="updateGlueSysMonitorLog" parameterType="GlueSysMonitorLog">
+        update glue_sys_monitor_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="glueBarCode != null">glue_bar_code = #{glueBarCode},</if>
+            <if test="glueMachineName != null">glue_machine_name = #{glueMachineName},</if>
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="lineName != null">line_name = #{lineName},</if>
+            <if test="alarmMsg != null">alarm_msg = #{alarmMsg},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectGlueSysMonitorLogList" parameterType="GlueSysMonitorLog" resultMap="GlueSysMonitorLogResult">
+        <include refid="selectGlueSysMonitorLogVo"/>
+        <where>
+            <if test="glueBarCode != null  and glueBarCode != ''">and glue_bar_code = #{glueBarCode}</if>
+            <if test="type != null and type != ''">and type = #{type}</if>
+        </where>
+    </select>
+
+    <select id="selectGlueSysMonitorLogByProjectName" parameterType="String" resultMap="GlueSysMonitorLogResult">
+        <include refid="selectGlueSysMonitorLogVo"/>
+        <where>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            and status = 0
+        </where>
+    </select>
+
+    <select id="selectGlueSysMonitorLogByGlueBarCode" parameterType="String" resultMap="GlueSysMonitorLogResult">
+        <include refid="selectGlueSysMonitorLogVo"/>
+        <where>
+            <if test="glueBarCode != null and glueBarCode != ''">and glue_bar_code = #{glueBarCode}</if>
+        </where>
+    </select>
+
+    <select id="selectGlueSysMonitorLogByType" parameterType="String" resultMap="GlueSysMonitorLogResult">
+        <include refid="selectGlueSysMonitorLogVo"/>
+        <where>
+            <if test="glueBarCode != null and glueBarCode != ''">and glue_bar_code = #{glueBarCode}</if>
+            <if test="type != null and type != ''">and type = #{type}</if>
+        </where>
+    </select>
+
+    <insert id="insertGlueSysMonitorLog" parameterType="GlueSysMonitorLog">
+        insert into glue_sys_monitor_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="glueBarCode != null">glue_bar_code,</if>
+            <if test="glueMachineName != null">glue_machine_name,</if>
+            <if test="projectName != null">project_name,</if>
+            <if test="lineName != null">line_name,</if>
+            <if test="alarmMsg != null">alarm_msg,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="glueBarCode != null">#{glueBarCode},</if>
+            <if test="glueMachineName != null">#{glueMachineName},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="lineName != null">#{lineName},</if>
+            <if test="alarmMsg != null">#{alarmMsg},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+</mapper>

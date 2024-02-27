@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.glue.mapper.GlueSysCancelInfoMapper">
+
+    <resultMap type="GlueSysCancelInfo" id="GlueSysCancelInfoResult">
+        <result property="id" column="id"/>
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="supplierCode" column="supplier_code"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="shoppingDate" column="shopping_date"/>
+        <result property="shelfLife" column="shelf_life"/>
+        <result property="weight" column="weight"/>
+        <result property="selfCode" column="self_code"/>
+        <result property="projectName" column="project_name"/>
+        <result property="lineName" column="line_name"/>
+        <result property="glueMachineName" column="glue_machine_name"/>
+        <result property="isInStorage" column="is_in_storage"/>
+        <result property="inStorageTime" column="in_storage_time"/>
+        <result property="isNeedThawing" column="is_need_thawing"/>
+        <result property="thawingNeedTime" column="thawing_need_time"/>
+        <result property="thawingStartTime" column="thawing_start_time"/>
+        <result property="thawingEndTime" column="thawing_end_time"/>
+        <result property="thawingUsedTime" column="thawing_used_time"/>
+        <result property="isNeedUnfreeze" column="is_need_unfreeze"/>
+        <result property="unfreezeNeedTime" column="unfreeze_need_time"/>
+        <result property="unfreezeStartTime" column="unfreeze_start_time"/>
+        <result property="unfreezeEndTime" column="unfreeze_end_time"/>
+        <result property="unfreezeUsedTime" column="unfreeze_used_time"/>
+        <result property="isNeedDeaerate" column="is_need_deaerate"/>
+        <result property="deaerateNeedTime" column="deaerate_need_time"/>
+        <result property="deaerateStartTime" column="deaerate_start_time"/>
+        <result property="deaerateEndTime" column="deaerate_end_time"/>
+        <result property="isOutStorage" column="is_out_storage"/>
+        <result property="outStorageTime" column="out_storage_time"/>
+        <result property="isInLine" column="is_in_line"/>
+        <result property="lineStartTime" column="line_start_time"/>
+        <result property="lineEndTime" column="line_end_time"/>
+        <result property="isCancel" column="is_cancel"/>
+        <result property="cancelTime" column="cancel_time"/>
+    </resultMap>
+
+    <sql id="selectGlueSysCancelInfoVo">
+        select id,
+               glue_bar_code,
+               supplier_code,
+               material_code,
+               production_date,
+               shopping_date,
+               shelf_life,
+               weight,
+               self_code,
+               project_name,
+               line_name,
+               glue_machine_name,
+               is_in_storage,
+               in_storage_time,
+               is_need_thawing,
+               thawing_need_time,
+               thawing_start_time,
+               thawing_end_time,
+               thawing_used_time,
+               is_need_unfreeze,
+               unfreeze_need_time,
+               unfreeze_start_time,
+               unfreeze_end_time,
+               unfreeze_used_time,
+               is_need_deaerate,
+               deaerate_need_time,
+               deaerate_start_time,
+               deaerate_end_time,
+               is_out_storage,
+               out_storage_time,
+               is_in_line,
+               line_start_time,
+               line_end_time,
+               is_cancel,
+               cancel_time
+        from glue_sys_cancel_info
+    </sql>
+
+    <select id="selectGlueSysCancelInfoList" parameterType="GlueSysCancelInfo" resultMap="GlueSysCancelInfoResult">
+        <include refid="selectGlueSysCancelInfoVo"/>
+        <where>
+            <if test="glueBarCode != null  and glueBarCode != ''">and glue_bar_code = #{glueBarCode}</if>
+            <if test="supplierCode != null  and supplierCode != ''">and supplier_code = #{supplierCode}</if>
+            <if test="materialCode != null  and materialCode != ''">and material_code = #{materialCode}</if>
+            <if test="productionDate != null ">and production_date = #{productionDate}</if>
+            <if test="shoppingDate != null ">and shopping_date = #{shoppingDate}</if>
+            <if test="shelfLife != null  and shelfLife != ''">and shelf_life = #{shelfLife}</if>
+            <if test="weight != null  and weight != ''">and weight = #{weight}</if>
+            <if test="selfCode != null  and selfCode != ''">and self_code = #{selfCode}</if>
+            <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
+                '%')
+            </if>
+            <if test="lineName != null  and lineName != ''">and line_name like concat('%', #{lineName}, '%')</if>
+            <if test="glueMachineName != null  and glueMachineName != ''">and glue_machine_name like concat('%',
+                #{glueMachineName}, '%')
+            </if>
+            <if test="isInStorage != null  and isInStorage != ''">and is_in_storage = #{isInStorage}</if>
+            <if test="isCancel != null  and isCancel != ''">and is_cancel = #{isCancel}</if>
+        </where>
+    </select>
+
+    <select id="selectGlueSysCancelInfoById" parameterType="Long" resultMap="GlueSysCancelInfoResult">
+        <include refid="selectGlueSysCancelInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectGlueSysCancelInfoByGlueBarCode" parameterType="String" resultMap="GlueSysCancelInfoResult">
+        <include refid="selectGlueSysCancelInfoVo"/>
+        where glue_bar_code = #{glueBarCode}
+    </select>
+
+    <insert id="insertGlueSysCancelInfo" parameterType="GlueSysProcessInfo">
+        insert into glue_sys_cancel_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="glueBarCode != null">glue_bar_code,</if>
+            <if test="supplierCode != null">supplier_code,</if>
+            <if test="materialCode != null">material_code,</if>
+            <if test="productionDate != null">production_date,</if>
+            <if test="shoppingDate != null">shopping_date,</if>
+            <if test="shelfLife != null">shelf_life,</if>
+            <if test="weight != null">weight,</if>
+            <if test="selfCode != null">self_code,</if>
+            <if test="projectName != null">project_name,</if>
+            <if test="lineName != null">line_name,</if>
+            <if test="glueMachineName != null">glue_machine_name,</if>
+            <if test="isInStorage != null">is_in_storage,</if>
+            <if test="inStorageTime != null">in_storage_time,</if>
+            <if test="isNeedThawing != null">is_need_thawing,</if>
+            <if test="thawingNeedTime != null">thawing_need_time,</if>
+            <if test="thawingStartTime != null">thawing_start_time,</if>
+            <if test="thawingEndTime != null">thawing_end_time,</if>
+            <if test="thawingUsedTime != null">thawing_used_time,</if>
+            <if test="isNeedUnfreeze != null">is_need_unfreeze,</if>
+            <if test="unfreezeNeedTime != null">unfreeze_need_time,</if>
+            <if test="unfreezeStartTime != null">unfreeze_start_time,</if>
+            <if test="unfreezeEndTime != null">unfreeze_end_time,</if>
+            <if test="unfreezeUsedTime != null">unfreeze_used_time,</if>
+            <if test="isNeedDeaerate != null">is_need_deaerate,</if>
+            <if test="deaerateNeedTime != null">deaerate_need_time,</if>
+            <if test="deaerateStartTime != null">deaerate_start_time,</if>
+            <if test="deaerateEndTime != null">deaerate_end_time,</if>
+            <if test="isOutStorage != null">is_out_storage,</if>
+            <if test="outStorageTime != null">out_storage_time,</if>
+            <if test="isInLine != null">is_in_line,</if>
+            <if test="lineStartTime != null">line_start_time,</if>
+            <if test="lineEndTime != null">line_end_time,</if>
+            <if test="isCancel != null">is_cancel,</if>
+            <if test="cancelTime != null">cancel_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="glueBarCode != null">#{glueBarCode},</if>
+            <if test="supplierCode != null">#{supplierCode},</if>
+            <if test="materialCode != null">#{materialCode},</if>
+            <if test="productionDate != null">#{productionDate},</if>
+            <if test="shoppingDate != null">#{shoppingDate},</if>
+            <if test="shelfLife != null">#{shelfLife},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="selfCode != null">#{selfCode},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="lineName != null">#{lineName},</if>
+            <if test="glueMachineName != null">#{glueMachineName},</if>
+            <if test="isInStorage != null">#{isInStorage},</if>
+            <if test="inStorageTime != null">#{inStorageTime},</if>
+            <if test="isNeedThawing != null">#{isNeedThawing},</if>
+            <if test="thawingNeedTime != null">#{thawingNeedTime},</if>
+            <if test="thawingStartTime != null">#{thawingStartTime},</if>
+            <if test="thawingEndTime != null">#{thawingEndTime},</if>
+            <if test="thawingUsedTime != null">#{thawingUsedTime},</if>
+            <if test="isNeedUnfreeze != null">#{isNeedUnfreeze},</if>
+            <if test="unfreezeNeedTime != null">#{unfreezeNeedTime},</if>
+            <if test="unfreezeStartTime != null">#{unfreezeStartTime},</if>
+            <if test="unfreezeEndTime != null">#{unfreezeEndTime},</if>
+            <if test="unfreezeUsedTime != null">#{unfreezeUsedTime},</if>
+            <if test="isNeedDeaerate != null">#{isNeedDeaerate},</if>
+            <if test="deaerateNeedTime != null">#{deaerateNeedTime},</if>
+            <if test="deaerateStartTime != null">#{deaerateStartTime},</if>
+            <if test="deaerateEndTime != null">#{deaerateEndTime},</if>
+            <if test="isOutStorage != null">#{isOutStorage},</if>
+            <if test="outStorageTime != null">#{outStorageTime},</if>
+            <if test="isInLine != null">#{isInLine},</if>
+            <if test="lineStartTime != null">#{lineStartTime},</if>
+            <if test="lineEndTime != null">#{lineEndTime},</if>
+            <if test="isCancel != null">#{isCancel},</if>
+            <if test="cancelTime != null">#{cancelTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGlueSysCancelInfo" parameterType="GlueSysCancelInfo">
+        update glue_sys_cancel_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="glueBarCode != null">glue_bar_code = #{glueBarCode},</if>
+            <if test="supplierCode != null">supplier_code = #{supplierCode},</if>
+            <if test="materialCode != null">material_code = #{materialCode},</if>
+            <if test="productionDate != null">production_date = #{productionDate},</if>
+            <if test="shoppingDate != null">shopping_date = #{shoppingDate},</if>
+            <if test="shelfLife != null">shelf_life = #{shelfLife},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="selfCode != null">self_code = #{selfCode},</if>
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="lineName != null">line_name = #{lineName},</if>
+            <if test="glueMachineName != null">glue_machine_name = #{glueMachineName},</if>
+            <if test="isInStorage != null">is_in_storage = #{isInStorage},</if>
+            <if test="inStorageTime != null">in_storage_time = #{inStorageTime},</if>
+            <if test="isNeedThawing != null">is_need_thawing = #{isNeedThawing},</if>
+            <if test="thawingNeedTime != null">thawing_need_time = #{thawingNeedTime},</if>
+            <if test="thawingStartTime != null">thawing_start_time = #{thawingStartTime},</if>
+            <if test="thawingEndTime != null">thawing_end_time = #{thawingEndTime},</if>
+            <if test="thawingUsedTime != null">thawing_used_time = #{thawingUsedTime},</if>
+            <if test="isNeedUnfreeze != null">is_need_unfreeze = #{isNeedUnfreeze},</if>
+            <if test="unfreezeNeedTime != null">unfreeze_need_time = #{unfreezeNeedTime},</if>
+            <if test="unfreezeStartTime != null">unfreeze_start_time = #{unfreezeStartTime},</if>
+            <if test="unfreezeEndTime != null">unfreeze_end_time = #{unfreezeEndTime},</if>
+            <if test="unfreezeUsedTime != null">unfreeze_used_time = #{unfreezeUsedTime},</if>
+            <if test="isNeedDeaerate != null">is_need_deaerate = #{isNeedDeaerate},</if>
+            <if test="deaerateNeedTime != null">deaerate_need_time = #{deaerateNeedTime},</if>
+            <if test="deaerateStartTime != null">deaerate_start_time = #{deaerateStartTime},</if>
+            <if test="deaerateEndTime != null">deaerate_end_time = #{deaerateEndTime},</if>
+            <if test="isOutStorage != null">is_out_storage = #{isOutStorage},</if>
+            <if test="outStorageTime != null">out_storage_time = #{outStorageTime},</if>
+            <if test="isInLine != null">is_in_line = #{isInLine},</if>
+            <if test="lineStartTime != null">line_start_time = #{lineStartTime},</if>
+            <if test="lineEndTime != null">line_end_time = #{lineEndTime},</if>
+            <if test="isCancel != null">is_cancel = #{isCancel},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGlueSysCancelInfoById" parameterType="Long">
+        delete
+        from glue_sys_cancel_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteGlueSysCancelInfoByIds" parameterType="String">
+        delete from glue_sys_cancel_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

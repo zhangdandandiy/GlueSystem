@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.glue.mapper.GlueSysBasicSettingMapper">
+
+    <resultMap type="GlueSysBasicSetting" id="GlueSysBasicSettingResult">
+        <result property="id" column="id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="lineNumber" column="line_number"/>
+        <result property="glueMachineNumber" column="glue_machine_number"/>
+        <result property="encodingFormat" column="encoding_format"/>
+        <result property="supplierCode" column="supplier_code"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="isNeedThawing" column="is_need_thawing"/>
+        <result property="thawingTimeUpper" column="thawing_time_upper"/>
+        <result property="thawingTimeLower" column="thawing_time_lower"/>
+        <result property="isNeedUnfreeze" column="is_need_unfreeze"/>
+        <result property="unfreezeTimeUpper" column="unfreeze_time_upper"/>
+        <result property="unfreezeTimeLower" column="unfreeze_time_lower"/>
+        <result property="isNeedDeaerate" column="is_need_deaerate"/>
+        <result property="deaerateTimeUpper" column="deaerate_time_upper"/>
+        <result property="deaerateTimeLower" column="deaerate_time_lower"/>
+        <result property="warnLifeTime" column="warn_life_time"/>
+        <result property="alarmLifeTime" column="alarm_life_time"/>
+        <result property="useLifeTime" column="use_life_time"/>
+        <result property="isNeedRealTimeMonitor" column="is_need_real_time_monitor"/>
+    </resultMap>
+
+    <sql id="selectGlueSysBasicSettingVo">
+        select id,
+               project_name,
+               line_number,
+               glue_machine_number,
+               encoding_format,
+               supplier_code,
+               material_code,
+               is_need_thawing,
+               thawing_time_upper,
+               thawing_time_lower,
+               is_need_unfreeze,
+               unfreeze_time_upper,
+               unfreeze_time_lower,
+               is_need_deaerate,
+               deaerate_time_upper,
+               deaerate_time_lower,
+               warn_life_time,
+               alarm_life_time,
+               use_life_time,
+               is_need_real_time_monitor
+        from glue_sys_basic_setting
+    </sql>
+
+    <select id="selectGlueSysBasicSettingList" parameterType="GlueSysBasicSetting"
+            resultMap="GlueSysBasicSettingResult">
+        <include refid="selectGlueSysBasicSettingVo"/>
+        <where>
+            <if test="projectName != null  and projectName != ''">and project_name = #{projectName}</if>
+            <if test="glueMachineNumber != null ">and glue_machine_number = #{glueMachineNumber}</if>
+            <if test="encodingFormat != null  and encodingFormat != ''">and encoding_format = #{encodingFormat}</if>
+            <if test="supplierCode != null  and supplierCode != ''">and supplier_code = #{supplierCode}</if>
+            <if test="materialCode != null  and materialCode != ''">and material_code = #{materialCode}</if>
+            <if test="isNeedThawing != null  and isNeedThawing != ''">and is_need_thawing = #{isNeedThawing}</if>
+            <if test="isNeedUnfreeze != null  and isNeedUnfreeze != ''">and is_need_unfreeze = #{isNeedUnfreeze}</if>
+            <if test="isNeedDeaerate != null  and isNeedDeaerate != ''">and is_need_deaerate = #{isNeedDeaerate}</if>
+            <if test="isNeedRealTimeMonitor != null  and isNeedRealTimeMonitor != ''">and is_need_real_time_monitor =
+                #{isNeedRealTimeMonitor}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectGlueSysBasicSettingById" parameterType="Long" resultMap="GlueSysBasicSettingResult">
+        <include refid="selectGlueSysBasicSettingVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectGlueSysBasicSettingByProjectName" parameterType="String" resultMap="GlueSysBasicSettingResult">
+        <include refid="selectGlueSysBasicSettingVo"/>
+        where project_name = #{projectName}
+    </select>
+
+    <select id="selectGlueSysBasicSettingListByProjectName" parameterType="String" resultMap="GlueSysBasicSettingResult">
+        <include refid="selectGlueSysBasicSettingVo"/>
+        <where>
+            <if test="projectName != null and projectName != ''"> project_name = #{projectName}</if>
+        </where>
+    </select>
+
+    <insert id="insertGlueSysBasicSetting" parameterType="GlueSysBasicSetting">
+        insert into glue_sys_basic_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">project_name,</if>
+            <if test="lineNumber != null">line_number,</if>
+            <if test="glueMachineNumber != null">glue_machine_number,</if>
+            <if test="encodingFormat != null">encoding_format,</if>
+            <if test="supplierCode != null">supplier_code,</if>
+            <if test="materialCode != null">material_code,</if>
+            <if test="isNeedThawing != null">is_need_thawing,</if>
+            <if test="thawingTimeUpper != null">thawing_time_upper,</if>
+            <if test="thawingTimeLower != null">thawing_time_lower,</if>
+            <if test="isNeedUnfreeze != null">is_need_unfreeze,</if>
+            <if test="unfreezeTimeUpper != null">unfreeze_time_upper,</if>
+            <if test="unfreezeTimeLower != null">unfreeze_time_lower,</if>
+            <if test="isNeedDeaerate != null">is_need_deaerate,</if>
+            <if test="deaerateTimeUpper != null">deaerate_time_upper,</if>
+            <if test="deaerateTimeLower != null">deaerate_time_lower,</if>
+            <if test="warnLifeTime != null">warn_life_time,</if>
+            <if test="alarmLifeTime != null">alarm_life_time,</if>
+            <if test="useLifeTime != null">use_life_time,</if>
+            <if test="isNeedRealTimeMonitor != null">is_need_real_time_monitor,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">#{projectName},</if>
+            <if test="lineNumber != null">#{lineNumber},</if>
+            <if test="glueMachineNumber != null">#{glueMachineNumber},</if>
+            <if test="encodingFormat != null">#{encodingFormat},</if>
+            <if test="supplierCode != null">#{supplierCode},</if>
+            <if test="materialCode != null">#{materialCode},</if>
+            <if test="isNeedThawing != null">#{isNeedThawing},</if>
+            <if test="thawingTimeUpper != null">#{thawingTimeUpper},</if>
+            <if test="thawingTimeLower != null">#{thawingTimeLower},</if>
+            <if test="isNeedUnfreeze != null">#{isNeedUnfreeze},</if>
+            <if test="unfreezeTimeUpper != null">#{unfreezeTimeUpper},</if>
+            <if test="unfreezeTimeLower != null">#{unfreezeTimeLower},</if>
+            <if test="isNeedDeaerate != null">#{isNeedDeaerate},</if>
+            <if test="deaerateTimeUpper != null">#{deaerateTimeUpper},</if>
+            <if test="deaerateTimeLower != null">#{deaerateTimeLower},</if>
+            <if test="warnLifeTime != null">#{warnLifeTime},</if>
+            <if test="alarmLifeTime != null">#{alarmLifeTime},</if>
+            <if test="useLifeTime != null">#{useLifeTime},</if>
+            <if test="isNeedRealTimeMonitor != null">#{isNeedRealTimeMonitor},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGlueSysBasicSetting" parameterType="GlueSysBasicSetting">
+        update glue_sys_basic_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="lineNumber != null">line_number = #{lineNumber},</if>
+            <if test="glueMachineNumber != null">glue_machine_number = #{glueMachineNumber},</if>
+            <if test="encodingFormat != null">encoding_format = #{encodingFormat},</if>
+            <if test="supplierCode != null">supplier_code = #{supplierCode},</if>
+            <if test="materialCode != null">material_code = #{materialCode},</if>
+            <if test="isNeedThawing != null">is_need_thawing = #{isNeedThawing},</if>
+            <if test="thawingTimeUpper != null">thawing_time_upper = #{thawingTimeUpper},</if>
+            <if test="thawingTimeLower != null">thawing_time_lower = #{thawingTimeLower},</if>
+            <if test="isNeedUnfreeze != null">is_need_unfreeze = #{isNeedUnfreeze},</if>
+            <if test="unfreezeTimeUpper != null">unfreeze_time_upper = #{unfreezeTimeUpper},</if>
+            <if test="unfreezeTimeLower != null">unfreeze_time_lower = #{unfreezeTimeLower},</if>
+            <if test="isNeedDeaerate != null">is_need_deaerate = #{isNeedDeaerate},</if>
+            <if test="deaerateTimeUpper != null">deaerate_time_upper = #{deaerateTimeUpper},</if>
+            <if test="deaerateTimeLower != null">deaerate_time_lower = #{deaerateTimeLower},</if>
+            <if test="warnLifeTime != null">warn_life_time = #{warnLifeTime},</if>
+            <if test="alarmLifeTime != null">alarm_life_time = #{alarmLifeTime},</if>
+            <if test="useLifeTime != null">use_life_time = #{useLifeTime},</if>
+            <if test="isNeedRealTimeMonitor != null">is_need_real_time_monitor = #{isNeedRealTimeMonitor},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGlueSysBasicSettingById" parameterType="Long">
+        delete
+        from glue_sys_basic_setting
+        where id = #{id}
+    </delete>
+
+    <select id="getAllProjectName" resultType="String">
+        select distinct project_name
+        from glue_sys_basic_setting
+    </select>
+
+</mapper>

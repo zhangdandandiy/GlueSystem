@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.glue.mapper.GlueSysShowListMapper">
+
+    <resultMap type="GlueSysInStorage" id="GlueSysInStorageResult">
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="supplierCode" column="supplier_code"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="shoppingDate" column="shopping_date"/>
+        <result property="shelfLife" column="shelf_life"/>
+        <result property="weight" column="weight"/>
+        <result property="projectName" column="project_name"/>
+        <result property="inStorageTime" column="in_storage_time"/>
+    </resultMap>
+
+    <resultMap id="GlueSysThawingResult" type="GlueSysThawing">
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="projectName" column="project_name"/>
+        <result property="isNeedThawing" column="is_need_thawing"/>
+        <result property="thawingStartTime" column="thawing_start_time"/>
+        <result property="thawingEndTime" column="thawing_end_time"/>
+        <result property="thawingNeedTime" column="thawing_need_time"/>
+        <result property="alreadyThawingTime" column="already_thawing_time"/>
+        <result property="remainThawingTime" column="remain_thawing_time"/>
+        <result property="exceedThawingTime" column="exceed_thawing_time"/>
+    </resultMap>
+
+    <resultMap id="GlueSysUnfreezeResult" type="GlueSysUnfreeze">
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="projectName" column="project_name"/>
+        <result property="inStorageTime" column="in_storage_time"/>
+        <result property="isNeedUnfreeze" column="is_need_unfreeze"/>
+        <result property="unfreezeStartTime" column="unfreeze_start_time"/>
+        <result property="unfreezeEndTime" column="unfreeze_end_time"/>
+        <result property="unfreezeNeedTime" column="unfreeze_need_time"/>
+        <result property="alreadyUnfreezeTime" column="already_unfreeze_time"/>
+        <result property="remainUnfreezeTime" column="remain_unfreeze_time"/>
+        <result property="exceedUnfreezeTime" column="exceed_unfreeze_time"/>
+    </resultMap>
+
+    <resultMap type="GlueSysOutStorage" id="GlueSysOutStorageResult">
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="supplierCode" column="supplier_code"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="shoppingDate" column="shopping_date"/>
+        <result property="shelfLife" column="shelf_life"/>
+        <result property="weight" column="weight"/>
+        <result property="projectName" column="project_name"/>
+        <result property="inStorageTime" column="in_storage_time"/>
+        <result property="outStorageTime" column="out_storage_time"/>
+    </resultMap>
+
+    <resultMap id="GlueSysDeaerateResult" type="GlueSysDeaerate">
+        <result property="glueBarCode" column="glue_bar_code"/>
+        <result property="projectName" column="project_name"/>
+        <result property="inStorageTime" column="in_storage_time"/>
+        <result property="isNeedDeaerate" column="is_need_deaerate"/>
+        <result property="deaerateStartTime" column="deaerate_start_time"/>
+        <result property="deaerateEndTime" column="deaerate_end_time"/>
+        <result property="deaerateNeedTime" column="deaerate_need_time"/>
+        <result property="alreadyDeaerateTime" column="already_deaerate_time"/>
+        <result property="remainDeaerateTime" column="remain_deaerate_time"/>
+        <result property="exceedDeaerateTime" column="exceed_deaerate_time"/>
+    </resultMap>
+
+    <select id="selectGlueSysInStorageByProjectName" parameterType="String" resultMap="GlueSysInStorageResult">
+        select project_name,
+        glue_bar_code,
+        supplier_code,
+        material_code,
+        production_date,
+        shopping_date,
+        shelf_life,
+        weight,
+        in_storage_time
+        from glue_sys_process_info
+        <where>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            and out_storage_time is null
+        </where>
+    </select>
+
+    <select id="selectGlueSysThawingByProjectName" parameterType="String" resultMap="GlueSysThawingResult">
+        select project_name,
+        glue_bar_code,
+        is_need_thawing,
+        thawing_start_time,
+        thawing_end_time,
+        thawing_need_time
+        from glue_sys_process_info
+        <where>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            and in_storage_time is not null
+            and thawing_start_time is not null
+            and unfreeze_start_time is null
+            and deaerate_start_time is null
+            and out_storage_time is null
+            and line_start_time is null
+            and cancel_time is null
+        </where>
+    </select>
+
+    <select id="selectGlueSysUnfreezeByProjectName" parameterType="String" resultMap="GlueSysUnfreezeResult">
+        select project_name,
+        glue_bar_code,
+        in_storage_time,
+        is_need_unfreeze,
+        unfreeze_start_time,
+        unfreeze_end_time,
+        unfreeze_need_time
+        from glue_sys_process_info
+        <where>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            and in_storage_time is not null
+            and unfreeze_start_time is not null
+            and deaerate_start_time is null
+            and out_storage_time is null
+            and line_start_time is null
+            and cancel_time is null
+        </where>
+    </select>
+
+    <select id="selectGlueSysOutStorageByProjectName" parameterType="String" resultMap="GlueSysOutStorageResult">
+        select project_name,
+        glue_bar_code,
+        supplier_code,
+        material_code,
+        production_date,
+        shopping_date,
+        shelf_life,
+        weight,
+        in_storage_time,
+        out_storage_time
+        from glue_sys_process_info
+        <where>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            and out_storage_time is not null
+            and line_start_time is null
+            and cancel_time is null
+        </where>
+    </select>
+
+    <select id="selectGlueSysDeaerateByProjectName" parameterType="String" resultMap="GlueSysDeaerateResult">
+        select project_name,
+        glue_bar_code,
+        in_storage_time,
+        is_need_deaerate,
+        deaerate_start_time,
+        deaerate_end_time,
+        deaerate_need_time
+        from glue_sys_process_info
+        <where>
+            <if test="projectName != null and projectName != ''">and project_name = #{projectName}</if>
+            and in_storage_time is not null
+            and unfreeze_start_time is not null
+            and deaerate_start_time is not null
+            and out_storage_time is not null
+            and line_start_time is null
+            and cancel_time is null
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.glue.mapper.GlueSysPersonListMapper">
+
+    <resultMap type="GlueSysPersonList" id="GlueSysPersonListResult">
+        <result property="id" column="id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="personName" column="person_name"/>
+        <result property="personNumber" column="person_number"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectGlueSysPersonListVo">
+        select id, project_name, person_name, person_number, create_time
+        from glue_sys_person_list
+    </sql>
+
+    <select id="selectGlueSysPersonListList" parameterType="GlueSysPersonList" resultMap="GlueSysPersonListResult">
+        <include refid="selectGlueSysPersonListVo"/>
+        <where>
+            <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
+                '%')
+            </if>
+            <if test="personName != null  and personName != ''">and person_name like concat('%', #{personName}, '%')
+            </if>
+            <if test="personNumber != null  and personNumber != ''">and person_number = #{personNumber}</if>
+        </where>
+    </select>
+
+    <select id="selectGlueSysPersonListById" parameterType="Long" resultMap="GlueSysPersonListResult">
+        <include refid="selectGlueSysPersonListVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGlueSysPersonList" parameterType="GlueSysPersonList">
+        insert into glue_sys_person_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">project_name,</if>
+            <if test="personName != null">person_name,</if>
+            <if test="personNumber != null">person_number,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null">#{projectName},</if>
+            <if test="personName != null">#{personName},</if>
+            <if test="personNumber != null">#{personNumber},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGlueSysPersonList" parameterType="GlueSysPersonList">
+        update glue_sys_person_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="personName != null">person_name = #{personName},</if>
+            <if test="personNumber != null">person_number = #{personNumber},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGlueSysPersonListById" parameterType="Long">
+        delete
+        from glue_sys_person_list
+        where id = #{id}
+    </delete>
+
+    <select id="getPersonNumberList" parameterType="String" resultType="String">
+        select person_number
+        from glue_sys_person_list
+        where project_name = #{projectName}
+    </select>
+
+</mapper>
